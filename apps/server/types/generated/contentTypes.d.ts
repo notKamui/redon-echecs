@@ -441,7 +441,9 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    blocks: Schema.Attribute.DynamicZone<['shared.texte', 'shared.image']>;
+    blocs: Schema.Attribute.DynamicZone<
+      ['shared.texte', 'shared.image', 'shared.tableau']
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -452,14 +454,6 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    table: Schema.Attribute.JSON &
-      Schema.Attribute.CustomField<
-        'global::table',
-        {
-          minRows: 1;
-          showHeader: true;
-        }
-      >;
     titre: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

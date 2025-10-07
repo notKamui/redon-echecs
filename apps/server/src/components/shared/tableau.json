@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_shared_tableaus",
+  "info": {
+    "displayName": "tableau"
+  },
+  "options": {},
+  "attributes": {
+    "table": {
+      "type": "customField",
+      "customField": "global::table",
+      "options": {
+        "showHeader": true,
+        "minRows": 1
+      }
+    }
+  },
+  "config": {}
+}

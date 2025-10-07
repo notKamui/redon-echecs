@@ -15,17 +15,13 @@
       "type": "string",
       "required": true
     },
-    "blocks": {
+    "blocs": {
       "type": "dynamiczone",
-      "components": ["shared.texte", "shared.image"]
-    },
-    "table": {
-      "type": "customField",
-      "customField": "global::table",
-      "options": {
-        "showHeader": true,
-        "minRows": 1
-      }
+      "components": [
+        "shared.texte",
+        "shared.image",
+        "shared.tableau"
+      ]
     }
   }
 }

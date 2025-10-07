@@ -2,7 +2,11 @@ import React from 'react'
 import { useIntl } from 'react-intl'
 
 type InputProps = {
-  attribute: { type: string; customField: string }
+  attribute: {
+    type: string
+    customField: string
+    options?: { showHeader?: boolean; minRows?: number }
+  }
   description?: any
   placeholder?: any
   hint?: string
@@ -12,8 +16,8 @@ type InputProps = {
     target: { name: string; type: string; value: unknown }
   }) => void
   contentTypeUID: string
-  type: string // custom field uid
-  value: unknown // should be an array of rows or object
+  type: string
+  value: unknown
   required?: boolean
   error?: any
   disabled?: boolean
@@ -59,6 +63,22 @@ const TableInput = React.forwardRef<HTMLInputElement, InputProps>(
       update({ ...parsed, rows })
     }
 
+    const removeColumn = (index: number) => {
+      if (parsed.headers.length <= 1) return
+      const headers = parsed.headers.filter((_, i) => i !== index)
+      const rows = parsed.rows.map((row) => row.filter((_, i) => i !== index))
+      update({ ...parsed, headers, rows })
+    }
+
+    const removeRow = (index: number) => {
+      const minRows = attribute.options?.minRows ?? 0
+      if (parsed.rows.length <= minRows) return
+      const rows = parsed.rows.filter((_, i) => i !== index)
+      update({ ...parsed, rows })
+    }
+
+    const showHeader = attribute.options?.showHeader ?? true
+
     const labelText = (() => {
       try {
         if (intlLabel && typeof intlLabel === 'object' && intlLabel.id) {
@@ -74,56 +94,106 @@ const TableInput = React.forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div>
-        <fieldset style={{ border: 'none', padding: 0 }}>
+        <fieldset
+          style={{
+            border: '1px solid var(--neutral200, #3B3B3B)',
+            borderRadius: 8,
+            padding: 12,
+          }}
+        >
           <legend style={{ display: 'block', marginBottom: 8 }}>
             {labelText}
           </legend>
           <div style={{ overflowX: 'auto' }}>
-            <table style={{ borderCollapse: 'collapse', width: '100%' }}>
-              <thead>
-                <tr>
-                  {parsed.headers.map((h, i) => (
-                    <th
-                      key={i}
-                      style={{
-                        border: '1px solid #ddd',
-                        padding: 8,
-                        background: '#fafafa',
-                      }}
-                    >
-                      <input
-                        ref={i === 0 ? (ref as any) : undefined}
-                        type="text"
-                        disabled={disabled}
-                        required={required}
-                        value={h}
-                        onChange={(e) => setHeader(i, e.currentTarget.value)}
+            <table
+              style={{
+                borderCollapse: 'separate',
+                borderSpacing: 0,
+                width: '100%',
+                tableLayout: 'fixed',
+              }}
+            >
+              {showHeader && (
+                <thead>
+                  <tr>
+                    {parsed.headers.map((h, i) => (
+                      <th
+                        key={i}
                         style={{
-                          width: '100%',
-                          border: 'none',
-                          background: 'transparent',
+                          border: '1px solid var(--neutral300,#5A5A5A)',
+                          padding: 8,
+                          background: 'var(--neutral100,#232323)',
+                          position: 'relative',
                         }}
-                      />
+                      >
+                        <input
+                          ref={i === 0 ? (ref as any) : undefined}
+                          type="text"
+                          disabled={disabled}
+                          required={required}
+                          value={h}
+                          onChange={(e) => setHeader(i, e.currentTarget.value)}
+                          style={{
+                            width: '100%',
+                            border: 'none',
+                            background: 'transparent',
+                            fontWeight: 600,
+                            color: 'var(--neutral0,#FFFFFF)',
+                          }}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeColumn(i)}
+                          disabled={disabled}
+                          title="Remove column"
+                          style={{
+                            position: 'absolute',
+                            top: 6,
+                            right: 6,
+                            background: 'transparent',
+                            border: '1px solid var(--neutral300,#5A5A5A)',
+                            borderRadius: 4,
+                            color: '#BBB',
+                            cursor: 'pointer',
+                            width: 24,
+                            height: 24,
+                            lineHeight: '20px',
+                          }}
+                        >
+                          ×
+                        </button>
+                      </th>
+                    ))}
+                    <th style={{ padding: 8, whiteSpace: 'nowrap' }}>
+                      <button
+                        type="button"
+                        onClick={addColumn}
+                        disabled={disabled}
+                        style={{
+                          padding: '4px 10px',
+                          border: '1px solid var(--neutral300,#5A5A5A)',
+                          background: 'var(--neutral100,#232323)',
+                          color: 'var(--neutral0,#FFFFFF)',
+                          borderRadius: 4,
+                        }}
+                      >
+                        + Column
+                      </button>
                     </th>
-                  ))}
-                  <th style={{ padding: 8 }}>
-                    <button
-                      type="button"
-                      onClick={addColumn}
-                      disabled={disabled}
-                    >
-                      + Column
-                    </button>
-                  </th>
-                </tr>
-              </thead>
+                  </tr>
+                </thead>
+              )}
               <tbody>
                 {parsed.rows.map((row, r) => (
                   <tr key={r}>
                     {row.map((cell, c) => (
                       <td
                         key={c}
-                        style={{ border: '1px solid #ddd', padding: 8 }}
+                        style={{
+                          border: '1px solid var(--neutral300,#5A5A5A)',
+                          padding: 8,
+                          background: 'var(--neutral110,#1D1D1D)',
+                        }}
                       >
                         <input
                           type="text"
@@ -131,18 +201,58 @@ const TableInput = React.forwardRef<HTMLInputElement, InputProps>(
                           required={required}
                           value={cell}
                           onChange={(e) => setCell(r, c, e.currentTarget.value)}
-                          style={{ width: '100%', border: 'none' }}
+                          style={{
+                            width: '100%',
+                            background: 'var(--neutral100,#232323)',
+                            border: '1px solid var(--neutral200,#3B3B3B)',
+                            borderRadius: 4,
+                            padding: '6px 8px',
+                            color: 'var(--neutral0,#FFFFFF)',
+                          }}
                         />
                       </td>
                     ))}
-                    <td style={{ padding: 8 }}>
-                      <button
-                        type="button"
-                        onClick={addRow}
-                        disabled={disabled}
-                      >
-                        + Row
-                      </button>
+                    <td
+                      style={{
+                        padding: 8,
+                        whiteSpace: 'nowrap',
+                        verticalAlign: 'top',
+                      }}
+                    >
+                      <div style={{ display: 'flex', gap: 8 }}>
+                        <button
+                          type="button"
+                          onClick={addRow}
+                          disabled={disabled}
+                          style={{
+                            padding: '4px 10px',
+                            border: '1px solid var(--neutral300,#5A5A5A)',
+                            background: 'var(--neutral100,#232323)',
+                            color: 'var(--neutral0,#FFFFFF)',
+                            borderRadius: 4,
+                          }}
+                        >
+                          + Row
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => removeRow(r)}
+                          disabled={
+                            disabled ||
+                            (attribute.options?.minRows ?? 0) >=
+                              parsed.rows.length
+                          }
+                          style={{
+                            padding: '4px 10px',
+                            border: '1px solid var(--neutral300,#5A5A5A)',
+                            background: 'var(--neutral100,#232323)',
+                            color: 'var(--neutral0,#FFFFFF)',
+                            borderRadius: 4,
+                          }}
+                        >
+                          Remove
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
