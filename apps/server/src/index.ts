@@ -7,7 +7,19 @@ export default {
    *
    * This gives you an opportunity to extend code.
    */
-  register(/* { strapi }: { strapi: Core.Strapi } */) {},
+    register({ strapi }: any) {
+    // Ensure the custom field is registered early during app register
+    try {
+        // Register a global custom field `global::table` that stores JSON
+        strapi.customFields.register({
+          name: 'table',
+          type: 'json',
+          inputSize: { default: 12, isResizable: true },
+        });
+    } catch {
+      // Ignore if already registered by the plugin
+    }
+  },
 
   /**
    * An asynchronous bootstrap function that runs before

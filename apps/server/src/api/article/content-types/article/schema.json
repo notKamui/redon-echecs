@@ -21,6 +21,14 @@
         "shared.texte",
         "shared.image"
       ]
+    },
+    "table": {
+      "type": "customField",
+      "customField": "global::table",
+      "options": {
+        "showHeader": true,
+        "minRows": 1
+      }
     }
   }
 }

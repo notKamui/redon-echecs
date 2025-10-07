@@ -452,6 +452,14 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    table: Schema.Attribute.JSON &
+      Schema.Attribute.CustomField<
+        'global::table',
+        {
+          minRows: 1;
+          showHeader: true;
+        }
+      >;
     titre: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
