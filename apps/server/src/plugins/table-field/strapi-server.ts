@@ -9,6 +9,6 @@ export default {
         default: 12,
         isResizable: true,
       },
-    });
+    })
   },
-};
+}

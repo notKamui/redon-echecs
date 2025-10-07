@@ -1,123 +1,158 @@
-import React from 'react';
-import { useIntl } from 'react-intl';
+import React from 'react'
+import { useIntl } from 'react-intl'
 
 type InputProps = {
-  attribute: { type: string; customField: string };
-  description?: any;
-  placeholder?: any;
-  hint?: string;
-  name: string;
-  intlLabel: any;
-  onChange: (args: { target: { name: string; type: string; value: unknown } }) => void;
-  contentTypeUID: string;
-  type: string; // custom field uid
-  value: unknown; // should be an array of rows or object
-  required?: boolean;
-  error?: any;
-  disabled?: boolean;
-};
+  attribute: { type: string; customField: string }
+  description?: any
+  placeholder?: any
+  hint?: string
+  name: string
+  intlLabel: any
+  onChange: (args: {
+    target: { name: string; type: string; value: unknown }
+  }) => void
+  contentTypeUID: string
+  type: string // custom field uid
+  value: unknown // should be an array of rows or object
+  required?: boolean
+  error?: any
+  disabled?: boolean
+}
 
-const TableInput = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
-  const { attribute, disabled, intlLabel, name, onChange, required, value } = props;
-  const { formatMessage } = useIntl();
+const TableInput = React.forwardRef<HTMLInputElement, InputProps>(
+  (props, ref) => {
+    const { attribute, disabled, intlLabel, name, onChange, required, value } =
+      props
+    const { formatMessage } = useIntl()
 
-  type TableValue = { headers: string[]; rows: string[][] };
-  const parsed: TableValue = React.useMemo(() => {
-    if (value && typeof value === 'object') return value as TableValue;
-    return { headers: ['Column 1', 'Column 2'], rows: [['', '']] };
-  }, [value]);
+    type TableValue = { headers: string[]; rows: string[][] }
+    const parsed: TableValue = React.useMemo(() => {
+      if (value && typeof value === 'object') return value as TableValue
+      return { headers: ['Column 1', 'Column 2'], rows: [['', '']] }
+    }, [value])
 
-  const update = (next: TableValue) => {
-    onChange({ target: { name, type: attribute.type, value: next } });
-  };
+    const update = (next: TableValue) => {
+      onChange({ target: { name, type: attribute.type, value: next } })
+    }
 
-  const setHeader = (i: number, text: string) => {
-    const headers = [...parsed.headers];
-    headers[i] = text;
-    update({ ...parsed, headers });
-  };
+    const setHeader = (i: number, text: string) => {
+      const headers = [...parsed.headers]
+      headers[i] = text
+      update({ ...parsed, headers })
+    }
 
-  const setCell = (r: number, c: number, text: string) => {
-    const rows = parsed.rows.map((row, ri) => (ri === r ? row.map((v, ci) => (ci === c ? text : v)) : row));
-    update({ ...parsed, rows });
-  };
+    const setCell = (r: number, c: number, text: string) => {
+      const rows = parsed.rows.map((row, ri) =>
+        ri === r ? row.map((v, ci) => (ci === c ? text : v)) : row,
+      )
+      update({ ...parsed, rows })
+    }
 
-  const addColumn = () => {
-    const headers = [...parsed.headers, `Column ${parsed.headers.length + 1}`];
-    const rows = parsed.rows.map((row) => [...row, '']);
-    update({ ...parsed, headers, rows });
-  };
+    const addColumn = () => {
+      const headers = [...parsed.headers, `Column ${parsed.headers.length + 1}`]
+      const rows = parsed.rows.map((row) => [...row, ''])
+      update({ ...parsed, headers, rows })
+    }
 
-  const addRow = () => {
-    const rows = [...parsed.rows, new Array(parsed.headers.length).fill('')];
-    update({ ...parsed, rows });
-  };
+    const addRow = () => {
+      const rows = [...parsed.rows, new Array(parsed.headers.length).fill('')]
+      update({ ...parsed, rows })
+    }
 
-  const labelText = (() => {
-    try {
-      if (intlLabel && typeof intlLabel === 'object' && intlLabel.id) {
-        return formatMessage(intlLabel);
-      }
-    } catch {}
-    return (intlLabel && (intlLabel.defaultMessage || intlLabel.id)) || name || 'Table';
-  })();
+    const labelText = (() => {
+      try {
+        if (intlLabel && typeof intlLabel === 'object' && intlLabel.id) {
+          return formatMessage(intlLabel)
+        }
+      } catch {}
+      return (
+        (intlLabel && (intlLabel.defaultMessage || intlLabel.id)) ||
+        name ||
+        'Table'
+      )
+    })()
 
-  return (
-    <div>
-      <fieldset style={{ border: 'none', padding: 0 }}>
-        <legend style={{ display: 'block', marginBottom: 8 }}>{labelText}</legend>
-        <div style={{ overflowX: 'auto' }}>
-          <table style={{ borderCollapse: 'collapse', width: '100%' }}>
-            <thead>
-              <tr>
-                {parsed.headers.map((h, i) => (
-                  <th key={i} style={{ border: '1px solid #ddd', padding: 8, background: '#fafafa' }}>
-                    <input
-                      ref={i === 0 ? (ref as any) : undefined}
-                      type="text"
-                      disabled={disabled}
-                      required={required}
-                      value={h}
-                      onChange={(e) => setHeader(i, e.currentTarget.value)}
-                      style={{ width: '100%', border: 'none', background: 'transparent' }}
-                    />
-                  </th>
-                ))}
-                <th style={{ padding: 8 }}>
-                  <button type="button" onClick={addColumn} disabled={disabled}>
-                    + Column
-                  </button>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {parsed.rows.map((row, r) => (
-                <tr key={r}>
-                  {row.map((cell, c) => (
-                    <td key={c} style={{ border: '1px solid #ddd', padding: 8 }}>
+    return (
+      <div>
+        <fieldset style={{ border: 'none', padding: 0 }}>
+          <legend style={{ display: 'block', marginBottom: 8 }}>
+            {labelText}
+          </legend>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+              <thead>
+                <tr>
+                  {parsed.headers.map((h, i) => (
+                    <th
+                      key={i}
+                      style={{
+                        border: '1px solid #ddd',
+                        padding: 8,
+                        background: '#fafafa',
+                      }}
+                    >
                       <input
+                        ref={i === 0 ? (ref as any) : undefined}
                         type="text"
                         disabled={disabled}
                         required={required}
-                        value={cell}
-                        onChange={(e) => setCell(r, c, e.currentTarget.value)}
-                        style={{ width: '100%', border: 'none' }}
+                        value={h}
+                        onChange={(e) => setHeader(i, e.currentTarget.value)}
+                        style={{
+                          width: '100%',
+                          border: 'none',
+                          background: 'transparent',
+                        }}
                       />
-                    </td>
+                    </th>
                   ))}
-                  <td style={{ padding: 8 }}>
-                    <button type="button" onClick={addRow} disabled={disabled}>
-                      + Row
+                  <th style={{ padding: 8 }}>
+                    <button
+                      type="button"
+                      onClick={addColumn}
+                      disabled={disabled}
+                    >
+                      + Column
                     </button>
-                  </td>
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </fieldset>
-    </div>
-  );
-});
+              </thead>
+              <tbody>
+                {parsed.rows.map((row, r) => (
+                  <tr key={r}>
+                    {row.map((cell, c) => (
+                      <td
+                        key={c}
+                        style={{ border: '1px solid #ddd', padding: 8 }}
+                      >
+                        <input
+                          type="text"
+                          disabled={disabled}
+                          required={required}
+                          value={cell}
+                          onChange={(e) => setCell(r, c, e.currentTarget.value)}
+                          style={{ width: '100%', border: 'none' }}
+                        />
+                      </td>
+                    ))}
+                    <td style={{ padding: 8 }}>
+                      <button
+                        type="button"
+                        onClick={addRow}
+                        disabled={disabled}
+                      >
+                        + Row
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </fieldset>
+      </div>
+    )
+  },
+)
 
-export default TableInput;
+export default TableInput

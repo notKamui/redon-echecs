@@ -17,10 +17,7 @@
     },
     "blocks": {
       "type": "dynamiczone",
-      "components": [
-        "shared.texte",
-        "shared.image"
-      ]
+      "components": ["shared.texte", "shared.image"]
     },
     "table": {
       "type": "customField",
