@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_shared_textes",
+  "info": {
+    "displayName": "texte"
+  },
+  "options": {},
+  "attributes": {
+    "contenu": {
+      "type": "blocks"
+    }
+  },
+  "config": {}
+}
