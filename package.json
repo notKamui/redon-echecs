@@ -6,10 +6,12 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint -- --fix",
-    "check-types": "turbo run check-types"
+    "check-types": "turbo run check-types",
+    "taze": "bunx taze major -lI -x @types/node"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.5",
+    "@types/node": "^22",
     "turbo": "^2.5.8"
   },
   "engines": {
@@ -24,7 +26,11 @@
     ],
     "catalog": {
       "typescript": "^5.9.3",
-      "@biomejs/biome": "^2.2.5"
+      "@biomejs/biome": "^2.2.5",
+      "@types/node": "^22"
     }
-  }
+  },
+  "trustedDependencies": [
+    "esbuild"
+  ]
 }

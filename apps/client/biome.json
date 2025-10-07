@@ -2,6 +2,6 @@
   "$schema": "https://biomejs.dev/schemas/2.2.5/schema.json",
   "extends": "//",
   "files": {
-    "includes": ["!**/dist"]
+    "includes": ["!**/dist", "!**/routeTree.gen.ts"]
   }
 }
