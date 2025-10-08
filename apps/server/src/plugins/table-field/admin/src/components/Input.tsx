@@ -52,7 +52,10 @@ const TableInput = React.forwardRef<HTMLInputElement, InputProps>(
     }
 
     const addColumn = () => {
-      const headers = [...parsed.headers, `Colonne ${parsed.headers.length + 1}`]
+      const headers = [
+        ...parsed.headers,
+        `Colonne ${parsed.headers.length + 1}`,
+      ]
       const rows = parsed.rows.map((row) => [...row, ''])
       update({ ...parsed, headers, rows })
     }
@@ -234,7 +237,7 @@ const TableInput = React.forwardRef<HTMLInputElement, InputProps>(
                             borderRadius: 4,
                           }}
                         >
-              + Ligne
+                          + Ligne
                         </button>
                         <button
                           type="button"
@@ -252,7 +255,7 @@ const TableInput = React.forwardRef<HTMLInputElement, InputProps>(
                             borderRadius: 4,
                           }}
                         >
-              Supprimer
+                          Supprimer
                         </button>
                       </div>
                     </td>
