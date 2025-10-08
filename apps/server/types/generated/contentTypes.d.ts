@@ -443,7 +443,13 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
   attributes: {
     blocs: Schema.Attribute.DynamicZone<
       ['shared.texte', 'shared.image', 'shared.tableau']
-    >;
+    > &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 1;
+        },
+        number
+      >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

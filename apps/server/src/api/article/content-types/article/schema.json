@@ -21,7 +21,8 @@
         "shared.texte",
         "shared.image",
         "shared.tableau"
-      ]
+      ],
+      "min": 1
     }
   }
 }
