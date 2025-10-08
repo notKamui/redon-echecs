@@ -32,7 +32,7 @@ const TableInput = React.forwardRef<HTMLInputElement, InputProps>(
     type TableValue = { headers: string[]; rows: string[][] }
     const parsed: TableValue = React.useMemo(() => {
       if (value && typeof value === 'object') return value as TableValue
-      return { headers: ['Column 1', 'Column 2'], rows: [['', '']] }
+      return { headers: ['Colonne 1', 'Colonne 2'], rows: [['', '']] }
     }, [value])
 
     const update = (next: TableValue) => {
@@ -53,7 +53,7 @@ const TableInput = React.forwardRef<HTMLInputElement, InputProps>(
     }
 
     const addColumn = () => {
-      const headers = [...parsed.headers, `Column ${parsed.headers.length + 1}`]
+      const headers = [...parsed.headers, `Colonne ${parsed.headers.length + 1}`]
       const rows = parsed.rows.map((row) => [...row, ''])
       update({ ...parsed, headers, rows })
     }
@@ -102,7 +102,7 @@ const TableInput = React.forwardRef<HTMLInputElement, InputProps>(
           }}
         >
           <legend style={{ display: 'block', marginBottom: 8 }}>
-            {labelText}
+            {labelText || 'Tableau'}
           </legend>
           <div style={{ overflowX: 'auto' }}>
             <table
@@ -145,7 +145,7 @@ const TableInput = React.forwardRef<HTMLInputElement, InputProps>(
                           type="button"
                           onClick={() => removeColumn(i)}
                           disabled={disabled}
-                          title="Remove column"
+                          title="Supprimer la colonne"
                           style={{
                             position: 'absolute',
                             top: 6,
@@ -177,7 +177,7 @@ const TableInput = React.forwardRef<HTMLInputElement, InputProps>(
                           borderRadius: 4,
                         }}
                       >
-                        + Column
+                        + Colonne
                       </button>
                     </th>
                   </tr>
@@ -232,7 +232,7 @@ const TableInput = React.forwardRef<HTMLInputElement, InputProps>(
                             borderRadius: 4,
                           }}
                         >
-                          + Row
+                          + Ligne
                         </button>
                         <button
                           type="button"
@@ -250,7 +250,7 @@ const TableInput = React.forwardRef<HTMLInputElement, InputProps>(
                             borderRadius: 4,
                           }}
                         >
-                          Remove
+                          Supprimer
                         </button>
                       </div>
                     </td>
