@@ -24,6 +24,7 @@
     "tailwindcss": "^4.1.14"
   },
   "devDependencies": {
+    "@repo/typescript-config": "*",
     "@biomejs/biome": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
