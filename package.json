@@ -7,7 +7,7 @@
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint -- --fix",
     "check-types": "turbo run check-types",
-    "taze": "bunx taze major -lI -x @types/node"
+    "up": "bun update -ir"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.5",
@@ -18,9 +18,9 @@
   },
   "engines": {
     "node": ">=18",
-    "bun": ">=1.2.23"
+    "bun": ">=1.3.0"
   },
-  "packageManager": "bun@1.2.23",
+  "packageManager": "bun@1.3.0",
   "workspaces": {
     "packages": [
       "apps/*",
