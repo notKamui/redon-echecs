@@ -10,10 +10,10 @@
     "up": "bun update -ir"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.2.5",
+    "@biomejs/biome": "^2.2.7",
     "@types/node": "^22.18.10",
     "@types/react": "^19.2.2",
-    "@types/react-dom": "^19.2.1",
+    "@types/react-dom": "^19.2.2",
     "turbo": "^2.5.8"
   },
   "engines": {
@@ -28,10 +28,10 @@
     ],
     "catalog": {
       "typescript": "^5.9.3",
-      "@biomejs/biome": "^2.2.5",
+      "@biomejs/biome": "^2.2.7",
       "@types/node": "^22.18.10",
       "@types/react": "^19",
-      "@types/react-dom": "^19"
+      "@types/react-dom": "^19.2.2"
     }
   },
   "trustedDependencies": [
