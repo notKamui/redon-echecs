@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.7",
-    "@types/node": "^22.18.10",
+    "@types/node": "^22.18.12",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "turbo": "^2.5.8"
@@ -29,7 +29,7 @@
     "catalog": {
       "typescript": "^5.9.3",
       "@biomejs/biome": "^2.2.7",
-      "@types/node": "^22.18.10",
+      "@types/node": "^22.18.12",
       "@types/react": "^19",
       "@types/react-dom": "^19.2.2"
     }
